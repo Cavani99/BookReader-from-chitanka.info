@@ -16,8 +16,9 @@
         </constraints>
         <properties>
           <background color="-16446196"/>
-          <editable value="true"/>
+          <editable value="false"/>
           <enabled value="true"/>
+          <font name="Courier New" size="14" style="0"/>
           <foreground color="-1315861"/>
           <visible value="true"/>
         </properties>
