@@ -20,6 +20,7 @@
           <enabled value="true"/>
           <font name="Courier New" size="14" style="0"/>
           <foreground color="-1315861"/>
+          <lineWrap value="false"/>
           <visible value="true"/>
         </properties>
       </component>
