@@ -77,7 +77,6 @@ public class Main extends JFrame {
                 f.printStackTrace();
             }
         }
-
     }
 
     public void LoadChapters(ActionEvent e) {
@@ -110,7 +109,8 @@ public class Main extends JFrame {
                             index++;
                             if(!currentLine.equals("")){
                                 if(!chapterName.equals("") && chapterStartPage!=0){
-                                    if(index-chapterStartPage>=20 && Character.isUpperCase(chapterName.charAt(0))){
+                                    if(index-chapterStartPage>=20 && Character.isUpperCase(chapterName.charAt(0))
+                                    && currentLine.length()<=20){
                                         chapters.put(numberOfChapter,chapterName);
                                         chapterStart.put(numberOfChapter,chapterStartPage);
                                         numberOfChapter++;
@@ -131,8 +131,10 @@ public class Main extends JFrame {
 
                 textArea.setText("");
                 for (Map.Entry<Integer,String>entry:chapters.entrySet()) {
-                    textArea.append(entry.getKey()+": "+entry.getValue().replaceAll("\\t","")+"\n");
+                    textArea.append(entry.getKey()+": "+entry.getValue()+"\n");
                 }
+
+                reader.close();
 
             } catch (FileNotFoundException f) {
                 f.printStackTrace();
@@ -143,11 +145,50 @@ public class Main extends JFrame {
 
     public void pickChapterAction(ActionEvent e) {
 
+        if(read!=null) {
+            try {
+                int chapter = Integer.parseInt(JOptionPane.showInputDialog("Write the number of the chapter you want to read!"));
+                textArea.setText("\n");
+                Scanner reader = new Scanner(read);
+                if(chapters.containsKey(chapter)){
+                    getToChapter(reader,chapterStart.get(chapter));
+
+                    int startIndex=chapterStart.get(chapter);
+
+                    if(chapterStart.containsKey(chapter+1)){
+                        int endIndex=chapterStart.get(chapter+1);
+                        while(reader.hasNextLine() && startIndex!=endIndex){
+                            textArea.append(reader.nextLine().replaceAll("\\t","")+"\n");
+                            startIndex++;
+                        }
+                    }else{
+                        while(reader.hasNextLine()){
+                            textArea.append(reader.nextLine().replaceAll("\\t","")+"\n");
+                        }
+                    }
+                }else JOptionPane.showMessageDialog(this,"This chapter does not exist");
+
+
+            }catch (NumberFormatException | FileNotFoundException | NullPointerException n){
+                n.printStackTrace();
+            }
+
+        }else textArea.setText("No text file opened!");
+    }
+
+    public void getToChapter(Scanner reader,int index) {
+        int currentPos=0;
+
+       while (currentPos!=index){
+           reader.nextLine();
+           currentPos++;
+       }
     }
 
 
+
     public static void main(String[] args) {
-        JFrame frame=new Main();
+        new Main();
     }
 
 }
