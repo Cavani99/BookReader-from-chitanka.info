@@ -3,10 +3,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Main extends JFrame {
@@ -91,6 +88,7 @@ public class Main extends JFrame {
                 int chapterStartPage=0;
                 int index=2;
                 int numberOfChapter=1;
+                boolean firstChapter=true;
                 chapters=new LinkedHashMap<>();
                 chapterStart=new HashMap<>();
                 for (int i = 0; i < 2; i++) {
@@ -110,7 +108,16 @@ public class Main extends JFrame {
                             if(!currentLine.equals("")){
                                 if(!chapterName.equals("") && chapterStartPage!=0){
                                     if(index-chapterStartPage>=20 && Character.isUpperCase(chapterName.charAt(0))
-                                    && currentLine.length()<=20){
+                                    && currentLine.length()<=20) {
+
+                                        if (firstChapter){
+                                        chapters.put(0, "Start of the Book");
+                                        chapterStart.put(0, 2);
+                                        firstChapter=false;
+                                        }
+
+
+
                                         chapters.put(numberOfChapter,chapterName);
                                         chapterStart.put(numberOfChapter,chapterStartPage);
                                         numberOfChapter++;
@@ -118,7 +125,7 @@ public class Main extends JFrame {
                                         chapterStartPage = index;
                                         chapterName = currentLine;
                                     }
-                                }else {
+                                }else if(Character.isUpperCase(currentLine.charAt(0))){
                                     chapterStartPage = index;
                                     chapterName = currentLine;
                                 }
@@ -158,14 +165,26 @@ public class Main extends JFrame {
                     if(chapterStart.containsKey(chapter+1)){
                         int endIndex=chapterStart.get(chapter+1);
                         while(reader.hasNextLine() && startIndex!=endIndex){
-                            textArea.append(reader.nextLine().replaceAll("\\t","")+"\n");
+                            String next=reader.nextLine().replaceAll("\\t","");
+                            if(next.length()>60){
+                                splitLine(next);
+                            }else {
+                                textArea.append(next + "\n");
+                            }
                             startIndex++;
                         }
                     }else{
                         while(reader.hasNextLine()){
-                            textArea.append(reader.nextLine().replaceAll("\\t","")+"\n");
+                            String next=reader.nextLine().replaceAll("\\t","");
+                            if(next.length()>60){
+                                splitLine(next);
+                            }else {
+                                textArea.append(next+"\n");
+                            }
                         }
                     }
+
+                    reader.close();
                 }else JOptionPane.showMessageDialog(this,"This chapter does not exist");
 
 
@@ -183,6 +202,31 @@ public class Main extends JFrame {
            reader.nextLine();
            currentPos++;
        }
+
+    }
+
+    public void splitLine(String text){
+        String [] tex=text.split(" ");
+        int curr=0;
+        int total=0;
+        while(true){
+            total+=30;
+
+            if(total>=tex.length){
+                for (int i = curr; i < tex.length; i++) {
+                    textArea.append(tex[i]+" ");
+                }
+                textArea.append("\n");
+                break;
+            }else{
+                for (int i = curr; i < total; i++) {
+                    textArea.append(tex[i]+" ");
+                }
+                textArea.append("\n");
+            }
+
+            curr+=30;
+        }
     }
 
 
