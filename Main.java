@@ -15,7 +15,7 @@ public class Main extends JFrame {
     private JTextArea textArea;
     private File read;
     private LinkedHashMap<Integer,String> chapters;
-    private HashMap<Integer,Integer>chapterStart;
+    private LinkedHashMap<Integer,Integer>chapterStart;
 
     Main(){
         setContentPane(Panel);
@@ -29,46 +29,46 @@ public class Main extends JFrame {
     }
 
     public void chooseBook(ActionEvent e) {
-       JFileChooser fileChooser=new JFileChooser();
+        JFileChooser fileChooser=new JFileChooser();
 
-       fileChooser.setCurrentDirectory(new File("D:\\C++\\"));
-       fileChooser.setAcceptAllFileFilterUsed(false);
-       FileNameExtensionFilter filter=new FileNameExtensionFilter("Text File(.txt)","txt");
-       fileChooser.addChoosableFileFilter(filter);
-       int selection = fileChooser.showOpenDialog(getParent());
+        fileChooser.setCurrentDirectory(new File("D:\\C++\\"));
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter=new FileNameExtensionFilter("Text File(.txt)","txt");
+        fileChooser.addChoosableFileFilter(filter);
+        int selection = fileChooser.showOpenDialog(getParent());
 
         if (selection == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
 
             try{
-            read=new File(selectedFile.toURI());
-            Scanner Reader=new Scanner(selectedFile);
+                read=new File(selectedFile.toURI());
+                Scanner Reader=new Scanner(selectedFile);
 
-            textArea.setText("FILE LOADED!!!\n");
-            //to determine if we get the author or book name!
-            boolean authorOrName=false;
-            String value;
-            while (Reader.hasNextLine()){
-                value=Reader.nextLine().replaceAll("\\t","");
-                if (!authorOrName){
-                    if(value.trim().isEmpty()){
-                        textArea.setText("Not a text file from chitanka.info");
-                        read=null;
-                        break;
+                textArea.setText("FILE LOADED!!!\n");
+                //to determine if we get the author or book name!
+                boolean authorOrName=false;
+                String value;
+                while (Reader.hasNextLine()){
+                    value=Reader.nextLine().replaceAll("\\t","");
+                    if (!authorOrName){
+                        if(value.trim().isEmpty()){
+                            textArea.setText("Not a text file from chitanka.info");
+                            read=null;
+                            break;
+                        }else{
+                            textArea.append("Author:"+value);
+                            authorOrName=true;
+                        }
                     }else{
-                    textArea.append("Author:"+value);
-                    authorOrName=true;
+                        if(value.trim().isEmpty()){
+                            textArea.setText("Not a text file from chitanka.info");
+                            read=null;
+                        }else {
+                            textArea.append("\nBook Name:" + value);
+                        }
+                        break;
                     }
-                }else{
-                    if(value.trim().isEmpty()){
-                        textArea.setText("Not a text file from chitanka.info");
-                        read=null;
-                    }else {
-                        textArea.append("\nBook Name:" + value);
-                    }
-                    break;
                 }
-            }
 
             }catch (FileNotFoundException f){
                 f.printStackTrace();
@@ -90,50 +90,80 @@ public class Main extends JFrame {
                 int numberOfChapter=1;
                 boolean firstChapter=true;
                 chapters=new LinkedHashMap<>();
-                chapterStart=new HashMap<>();
+                chapterStart=new LinkedHashMap<>();
                 for (int i = 0; i < 2; i++) {
                     reader.nextLine();
                     reader.nextLine();
                 }
                 while (reader.hasNextLine()){
+                    boolean EvenAmountofEmptySpaces=false;
                     currentLine=reader.nextLine().replaceAll("\\t","");
                     index++;
 
                     if(currentLine.equals("") && reader.hasNextLine()){
                         currentLine=reader.nextLine().replaceAll("\\t","");
                         index++;
-                        if(currentLine.equals("") && reader.hasNextLine()){
+                        while (currentLine.equals("") && reader.hasNextLine()){
                             currentLine=reader.nextLine().replaceAll("\\t","");
                             index++;
-                            if(!currentLine.equals("")){
-                                if(!chapterName.equals("") && chapterStartPage!=0){
-                                    if(index-chapterStartPage>=20 && Character.isUpperCase(chapterName.charAt(0))
-                                    && currentLine.length()<=20) {
 
-                                        if (firstChapter){
+                            EvenAmountofEmptySpaces= !EvenAmountofEmptySpaces;
+                        }
+
+                        //empty spaces are even amount
+                        if(EvenAmountofEmptySpaces && chapterStartPage!=0){
+                            if(index-chapterStartPage>=20 && Character.isUpperCase(chapterName.charAt(0))
+                                    && Character.isUpperCase(currentLine.charAt(0)) || Character.isDigit(currentLine.charAt(0))) {
+
+                                if(currentLine.length()<=23) {
+
+                                    if (firstChapter) {
                                         chapters.put(0, "Start of the Book");
                                         chapterStart.put(0, 2);
-                                        firstChapter=false;
+                                        firstChapter = false;
+                                    }
+
+                                    chapters.put(numberOfChapter, chapterName);
+                                    chapterStart.put(numberOfChapter, chapterStartPage);
+                                    numberOfChapter++;
+
+                                    chapterStartPage = index;
+                                    chapterName = currentLine;
+                                }else {
+                                    index++;
+                                    if(reader.nextLine().replaceAll("\\t","").equals("") && currentLine.split(" ").length<=5){
+                                        if (firstChapter) {
+                                            chapters.put(0, "Start of the Book");
+                                            chapterStart.put(0, 2);
+                                            firstChapter = false;
                                         }
-
-
-
-                                        chapters.put(numberOfChapter,chapterName);
-                                        chapterStart.put(numberOfChapter,chapterStartPage);
+                                        chapters.put(numberOfChapter, chapterName);
+                                        chapterStart.put(numberOfChapter, chapterStartPage);
                                         numberOfChapter++;
 
                                         chapterStartPage = index;
                                         chapterName = currentLine;
                                     }
-                                }else if(Character.isUpperCase(currentLine.charAt(0))){
-                                    chapterStartPage = index;
-                                    chapterName = currentLine;
                                 }
                             }
+                        }else if(EvenAmountofEmptySpaces && (Character.isUpperCase(currentLine.charAt(0)) || Character.isDigit(currentLine.charAt(0)))&& currentLine.length()<=23){
+
+                            chapterStartPage = index;
+                            chapterName = currentLine;
+                        }else if(!EvenAmountofEmptySpaces && currentLine.length()<=5 && Character.isDigit(currentLine.charAt(0))){
+                            chapters.put(numberOfChapter, chapterName);
+                            chapterStart.put(numberOfChapter, chapterStartPage);
+                            numberOfChapter++;
+
+                            chapterStartPage = index;
+                            chapterName = currentLine;
                         }
+
                     }
                 }
 
+                chapters.put(numberOfChapter, chapterName);
+                chapterStart.put(numberOfChapter, chapterStartPage);
 
 
                 textArea.setText("");
@@ -198,10 +228,10 @@ public class Main extends JFrame {
     public void getToChapter(Scanner reader,int index) {
         int currentPos=0;
 
-       while (currentPos!=index){
-           reader.nextLine();
-           currentPos++;
-       }
+        while (currentPos!=index){
+            reader.nextLine();
+            currentPos++;
+        }
 
     }
 
