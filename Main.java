@@ -31,7 +31,7 @@ public class Main extends JFrame {
     public void chooseBook(ActionEvent e) {
         JFileChooser fileChooser=new JFileChooser();
 
-        fileChooser.setCurrentDirectory(new File("D:\\C++\\"));
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         fileChooser.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter filter=new FileNameExtensionFilter("Text File(.txt)","txt");
         fileChooser.addChoosableFileFilter(filter);
@@ -236,21 +236,21 @@ public class Main extends JFrame {
     }
 
     public void splitLine(String text){
-        String [] tex=text.split(" ");
+        String [] wordsArray=text.split(" ");
         int curr=0;
         int total=0;
         while(true){
             total+=30;
 
-            if(total>=tex.length){
-                for (int i = curr; i < tex.length; i++) {
-                    textArea.append(tex[i]+" ");
+            if(total>=wordsArray.length){
+                for (int i = curr; i < wordsArray.length; i++) {
+                    textArea.append(wordsArray[i]+" ");
                 }
                 textArea.append("\n");
                 break;
             }else{
                 for (int i = curr; i < total; i++) {
-                    textArea.append(tex[i]+" ");
+                    textArea.append(wordsArray[i]+" ");
                 }
                 textArea.append("\n");
             }
