@@ -13,6 +13,10 @@ public class Main extends JFrame {
     private JButton loadChaptersButton;
     private JButton pickChapterButton;
     private JTextArea textArea;
+    private JMenuBar menuBar;
+    private JMenu changeColor;
+    private JMenuItem BackgroundColorItem;
+    private JMenuItem TextColorItem;
     private File read;
     private LinkedHashMap<Integer,String> chapters;
     private LinkedHashMap<Integer,Integer>chapterStart;
@@ -26,6 +30,9 @@ public class Main extends JFrame {
         chooseBookButton.addActionListener(this::chooseBook);
         loadChaptersButton.addActionListener(this::LoadChapters);
         pickChapterButton.addActionListener(this::pickChapterAction);
+
+        BackgroundColorItem.addActionListener(this::setBackgroundColor);
+        TextColorItem.addActionListener(this::setTextColor);
     }
 
     public void chooseBook(ActionEvent e) {
@@ -96,7 +103,7 @@ public class Main extends JFrame {
                     reader.nextLine();
                 }
                 while (reader.hasNextLine()){
-                    boolean EvenAmountofEmptySpaces=false;
+                    boolean EvenAmountOfEmptySpaces=false;
                     currentLine=reader.nextLine().replaceAll("\\t","");
                     index++;
 
@@ -107,11 +114,11 @@ public class Main extends JFrame {
                             currentLine=reader.nextLine().replaceAll("\\t","");
                             index++;
 
-                            EvenAmountofEmptySpaces= !EvenAmountofEmptySpaces;
+                            EvenAmountOfEmptySpaces= !EvenAmountOfEmptySpaces;
                         }
 
                         //empty spaces are even amount
-                        if(EvenAmountofEmptySpaces && chapterStartPage!=0){
+                        if(EvenAmountOfEmptySpaces && chapterStartPage!=0){
                             if(index-chapterStartPage>=20 && Character.isUpperCase(chapterName.charAt(0))
                                     && Character.isUpperCase(currentLine.charAt(0)) || Character.isDigit(currentLine.charAt(0))) {
 
@@ -146,11 +153,11 @@ public class Main extends JFrame {
                                     }
                                 }
                             }
-                        }else if(EvenAmountofEmptySpaces && (Character.isUpperCase(currentLine.charAt(0)) || Character.isDigit(currentLine.charAt(0)))&& currentLine.length()<=23){
+                        }else if(EvenAmountOfEmptySpaces && (Character.isUpperCase(currentLine.charAt(0)) || Character.isDigit(currentLine.charAt(0)))&& currentLine.length()<=23){
 
                             chapterStartPage = index;
                             chapterName = currentLine;
-                        }else if(!EvenAmountofEmptySpaces && currentLine.length()<=5 && Character.isDigit(currentLine.charAt(0))){
+                        }else if(!EvenAmountOfEmptySpaces && currentLine.length()<=5 && Character.isDigit(currentLine.charAt(0))){
                             chapters.put(numberOfChapter, chapterName);
                             chapterStart.put(numberOfChapter, chapterStartPage);
                             numberOfChapter++;
@@ -257,6 +264,16 @@ public class Main extends JFrame {
 
             curr+=30;
         }
+    }
+
+    public void setBackgroundColor(ActionEvent e) {
+
+
+    }
+
+    public void setTextColor(ActionEvent e) {
+
+
     }
 
 
