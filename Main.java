@@ -268,11 +268,13 @@ public class Main extends JFrame {
 
     public void setBackgroundColor(ActionEvent e) {
 
+       textArea.setBackground( JColorChooser.showDialog(null, "Choose a color",textArea.getBackground()));
 
     }
 
     public void setTextColor(ActionEvent e) {
 
+        textArea.setForeground(JColorChooser.showDialog(null, "Choose a color", textArea.getForeground()));
 
     }
 
