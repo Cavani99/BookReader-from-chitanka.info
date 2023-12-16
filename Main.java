@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -268,13 +269,15 @@ public class Main extends JFrame {
 
     public void setBackgroundColor(ActionEvent e) {
 
-       textArea.setBackground( JColorChooser.showDialog(null, "Choose a color",textArea.getBackground()));
+        Color color=JColorChooser.showDialog(null, "Choose a color",textArea.getBackground());
+        textArea.setBackground(Objects.requireNonNullElseGet(color, () -> new Color(5,13,12)));
 
     }
 
     public void setTextColor(ActionEvent e) {
 
-        textArea.setForeground(JColorChooser.showDialog(null, "Choose a color", textArea.getForeground()));
+        Color color=JColorChooser.showDialog(null, "Choose a color",textArea.getForeground());
+        textArea.setForeground(Objects.requireNonNullElseGet(color, () -> new Color(235,235,235)));
 
     }
 
