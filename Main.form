@@ -54,23 +54,73 @@
           </component>
         </children>
       </scrollpane>
-      <grid id="d68e0" class="javax.swing.JMenuBar" binding="menuBar" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
+      <grid id="d68e0" class="javax.swing.JMenuBar" binding="menuBar" layout-manager="GridBagLayout">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="true"/>
         </constraints>
-        <properties/>
-        <border type="none"/>
+        <properties>
+          <borderPainted value="false"/>
+          <doubleBuffered value="false"/>
+          <focusCycleRoot value="false"/>
+          <focusTraversalPolicyProvider value="false"/>
+          <inheritsPopupMenu value="false"/>
+          <margin top="0" left="0" bottom="0" right="0"/>
+          <opaque value="false"/>
+          <requestFocusEnabled value="true"/>
+          <verifyInputWhenFocusTarget value="true"/>
+          <visible value="true"/>
+        </properties>
+        <clientProperties>
+          <html.disable class="java.lang.Boolean" value="false"/>
+        </clientProperties>
+        <border type="empty"/>
         <children>
-          <grid id="7d1d2" class="javax.swing.JMenu" binding="changeColor" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+          <grid id="b2456" class="javax.swing.JMenu" binding="NewMenu" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="0.0"/>
             </constraints>
             <properties>
+              <alignmentX value="0.5"/>
+              <borderPainted value="true"/>
+              <enabled value="true"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <focusable value="true"/>
+              <font name="Source Code Pro" size="12" style="0"/>
+              <horizontalAlignment value="10"/>
+              <horizontalTextPosition value="11"/>
+              <margin top="2" left="2" bottom="2" right="2"/>
+              <popupMenuVisible value="false"/>
+              <text value="&amp;New"/>
+              <verifyInputWhenFocusTarget value="true"/>
+              <verticalAlignment value="0"/>
+              <visible value="true"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="fe0c9" class="javax.swing.JMenuItem" binding="newBook">
+                <constraints/>
+                <properties>
+                  <text value="&amp;Open New Book"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="7d1d2" class="javax.swing.JMenu" binding="changeColor" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <armed value="false"/>
               <font name="Source Code Pro" size="12" style="0"/>
               <horizontalAlignment value="10"/>
               <text value="&amp;Edit"/>
             </properties>
+            <clientProperties>
+              <hideActionText class="java.lang.Boolean" value="false"/>
+              <html.disable class="java.lang.Boolean" value="false"/>
+            </clientProperties>
             <border type="none"/>
             <children>
               <component id="b2ce7" class="javax.swing.JMenuItem" binding="BackgroundColorItem">
@@ -87,6 +137,52 @@
               </component>
             </children>
           </grid>
+          <grid id="78f5f" class="javax.swing.JMenu" binding="FileOperation" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <opaque value="true"/>
+              <popupMenuVisible value="false"/>
+              <rolloverEnabled value="false"/>
+              <selected value="false"/>
+              <text value="&amp;File"/>
+              <verifyInputWhenFocusTarget value="true"/>
+              <visible value="true"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="37ff7" class="javax.swing.JMenuItem" binding="LoadChapters">
+                <constraints/>
+                <properties>
+                  <text value="&amp;Load Chapters"/>
+                </properties>
+              </component>
+              <component id="f0075" class="javax.swing.JMenuItem" binding="PickChapter">
+                <constraints/>
+                <properties>
+                  <text value="&amp;Pick the Chapter"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <component id="925ab" class="javax.swing.JMenuItem" binding="Exit">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <borderPainted value="true"/>
+              <contentAreaFilled value="true"/>
+              <enabled value="true"/>
+              <focusable value="false"/>
+              <hideActionText value="false"/>
+              <preferredSize width="35" height="17"/>
+              <selected value="false"/>
+              <text value="&amp;Exit"/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>

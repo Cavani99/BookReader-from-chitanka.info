@@ -18,6 +18,12 @@ public class Main extends JFrame {
     private JMenu changeColor;
     private JMenuItem BackgroundColorItem;
     private JMenuItem TextColorItem;
+    private JMenu NewMenu;
+    private JMenuItem newBook;
+    private JMenu FileOperation;
+    private JMenuItem LoadChapters;
+    private JMenuItem PickChapter;
+    private JMenuItem Exit;
     private File read;
     private LinkedHashMap<Integer,String> chapters;
     private LinkedHashMap<Integer,Integer>chapterStart;
@@ -34,6 +40,10 @@ public class Main extends JFrame {
 
         BackgroundColorItem.addActionListener(this::setBackgroundColor);
         TextColorItem.addActionListener(this::setTextColor);
+        newBook.addActionListener(this::chooseBook);
+        LoadChapters.addActionListener(this::LoadChapters);
+        PickChapter.addActionListener(this::pickChapterAction);
+        Exit.addActionListener(this::exitProgram);
     }
 
     public void chooseBook(ActionEvent e) {
@@ -278,6 +288,12 @@ public class Main extends JFrame {
 
         Color color=JColorChooser.showDialog(null, "Choose a color",textArea.getForeground());
         textArea.setForeground(Objects.requireNonNullElseGet(color, () -> new Color(235,235,235)));
+
+    }
+
+    public void exitProgram(ActionEvent e) {
+
+       System.exit(0);
 
     }
 
