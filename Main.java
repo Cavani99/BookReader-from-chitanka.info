@@ -24,9 +24,13 @@ public class Main extends JFrame {
     private JMenuItem LoadChapters;
     private JMenuItem PickChapter;
     private JMenuItem Exit;
+    private JMenuItem ShowFullBook;
+    private JMenuItem LineWidthItem;
     private File read;
     private LinkedHashMap<Integer,String> chapters;
     private LinkedHashMap<Integer,Integer>chapterStart;
+    private int lineWidth=30;
+    private int chapterNumber;
 
     Main(){
         setContentPane(Panel);
@@ -44,9 +48,12 @@ public class Main extends JFrame {
         LoadChapters.addActionListener(this::LoadChapters);
         PickChapter.addActionListener(this::pickChapterAction);
         Exit.addActionListener(this::exitProgram);
+        ShowFullBook.addActionListener(this::printFullBook);
+        LineWidthItem.addActionListener(this::changeLineWidth);
     }
 
     public void chooseBook(ActionEvent e) {
+        chapterNumber= -100;
         JFileChooser fileChooser=new JFileChooser();
 
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -206,6 +213,7 @@ public class Main extends JFrame {
                 textArea.setText("\n");
                 Scanner reader = new Scanner(read);
                 if(chapters.containsKey(chapter)){
+                    chapterNumber=chapter;
                     getToChapter(reader,chapterStart.get(chapter));
 
                     int startIndex=chapterStart.get(chapter);
@@ -215,7 +223,7 @@ public class Main extends JFrame {
                         while(reader.hasNextLine() && startIndex!=endIndex){
                             String next=reader.nextLine().replaceAll("\\t","");
                             if(next.length()>60){
-                                splitLine(next);
+                                splitLine(next,lineWidth);
                             }else {
                                 textArea.append(next + "\n");
                             }
@@ -225,7 +233,7 @@ public class Main extends JFrame {
                         while(reader.hasNextLine()){
                             String next=reader.nextLine().replaceAll("\\t","");
                             if(next.length()>60){
-                                splitLine(next);
+                                splitLine(next,lineWidth);
                             }else {
                                 textArea.append(next+"\n");
                             }
@@ -253,12 +261,12 @@ public class Main extends JFrame {
 
     }
 
-    public void splitLine(String text){
+    public void splitLine(String text,int lineWidth){
         String [] wordsArray=text.split(" ");
         int curr=0;
         int total=0;
         while(true){
-            total+=30;
+            total+=lineWidth;
 
             if(total>=wordsArray.length){
                 for (int i = curr; i < wordsArray.length; i++) {
@@ -273,7 +281,7 @@ public class Main extends JFrame {
                 textArea.append("\n");
             }
 
-            curr+=30;
+            curr+=lineWidth;
         }
     }
 
@@ -293,10 +301,100 @@ public class Main extends JFrame {
 
     public void exitProgram(ActionEvent e) {
 
+    int confirm = JOptionPane.showConfirmDialog(null, "Exit?");
+
+    if(confirm==0)
        System.exit(0);
 
     }
 
+    public void printFullBook(ActionEvent e) {
+
+        if(read!=null) {
+            int confirm = JOptionPane.showConfirmDialog(null, "Do you really want to do this? It will be SLOW!");
+
+                if (confirm == 0){
+                    chapterNumber=99018;
+                    try {
+                        textArea.setText("\n");
+                        Scanner reader = new Scanner(read);
+                        while (reader.hasNextLine()) {
+                            String next = reader.nextLine().replaceAll("\\t", "");
+                            if (next.length() > 60) {
+                                splitLine(next,lineWidth);
+                            } else {
+                                textArea.append(next + "\n");
+                            }
+                        }
+                        reader.close();
+
+                    } catch (FileNotFoundException | NullPointerException n) {
+                        n.printStackTrace();
+                    }
+
+            }
+
+        }else textArea.setText("No text file opened!");
+
+    }
+
+    public void changeLineWidth(ActionEvent e){
+
+        lineWidth=Integer.parseInt(JOptionPane.showInputDialog("Write the maximum amount of words(width) in a line!"));
+
+        if(read!=null) {
+            try {
+                textArea.setText("\n");
+                Scanner reader = new Scanner(read);
+                if(chapters!=null && chapters.containsKey(chapterNumber)){
+                    getToChapter(reader,chapterStart.get(chapterNumber));
+
+                    int startIndex=chapterStart.get(chapterNumber);
+
+                    if(chapterStart.containsKey(chapterNumber+1)){
+                        int endIndex=chapterStart.get(chapterNumber+1);
+                        while(reader.hasNextLine() && startIndex!=endIndex){
+                            String next=reader.nextLine().replaceAll("\\t","");
+                            if(next.length()>60){
+                                splitLine(next,lineWidth);
+                            }else {
+                                textArea.append(next + "\n");
+                            }
+                            startIndex++;
+                        }
+                    }else{
+                        while(reader.hasNextLine()){
+                            String next=reader.nextLine().replaceAll("\\t","");
+                            if(next.length()>60){
+                                splitLine(next,lineWidth);
+                            }else {
+                                textArea.append(next+"\n");
+                            }
+                        }
+                    }
+
+                    reader.close();
+                }else if(chapterNumber==99018){
+                    textArea.setText("\n");
+                    while (reader.hasNextLine()) {
+                        String next = reader.nextLine().replaceAll("\\t", "");
+                        if (next.length() > 60) {
+                            splitLine(next,lineWidth);
+                        } else {
+                            textArea.append(next + "\n");
+                        }
+                    }
+                    reader.close();
+
+                }
+
+
+            }catch (NumberFormatException | FileNotFoundException | NullPointerException n){
+                n.printStackTrace();
+            }
+        }
+
+    }
 
 
     public static void main(String[] args) {

@@ -135,6 +135,12 @@
                   <text value="Change &amp;Text Color"/>
                 </properties>
               </component>
+              <component id="43ad4" class="javax.swing.JMenuItem" binding="LineWidthItem">
+                <constraints/>
+                <properties>
+                  <text value="&amp;Change Line Width"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <grid id="78f5f" class="javax.swing.JMenu" binding="FileOperation" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
@@ -143,6 +149,7 @@
               <gridbag weightx="1.0" weighty="0.0"/>
             </constraints>
             <properties>
+              <font name="Source Code Pro" size="12" style="0"/>
               <opaque value="true"/>
               <popupMenuVisible value="false"/>
               <rolloverEnabled value="false"/>
@@ -165,6 +172,13 @@
                   <text value="&amp;Pick the Chapter"/>
                 </properties>
               </component>
+              <component id="ed648" class="javax.swing.JMenuItem" binding="ShowFullBook">
+                <constraints/>
+                <properties>
+                  <enabled value="true"/>
+                  <text value="&amp;Print the Entire Book"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <component id="925ab" class="javax.swing.JMenuItem" binding="Exit">
@@ -177,6 +191,7 @@
               <contentAreaFilled value="true"/>
               <enabled value="true"/>
               <focusable value="false"/>
+              <font name="Source Code Pro" size="12" style="0"/>
               <hideActionText value="false"/>
               <preferredSize width="35" height="17"/>
               <selected value="false"/>
