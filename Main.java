@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 
+
 public class Main extends JFrame {
 
     private JPanel Panel;
@@ -14,6 +15,7 @@ public class Main extends JFrame {
     private JButton loadChaptersButton;
     private JButton pickChapterButton;
     private JTextArea textArea;
+
     private JMenuBar menuBar;
     private JMenu changeColor;
     private JMenuItem BackgroundColorItem;
@@ -41,6 +43,7 @@ public class Main extends JFrame {
         chooseBookButton.addActionListener(this::chooseBook);
         loadChaptersButton.addActionListener(this::LoadChapters);
         pickChapterButton.addActionListener(this::pickChapterAction);
+
 
         BackgroundColorItem.addActionListener(this::setBackgroundColor);
         TextColorItem.addActionListener(this::setTextColor);
@@ -96,7 +99,7 @@ public class Main extends JFrame {
                 }
 
             }catch (FileNotFoundException f){
-                f.printStackTrace();
+                JOptionPane.showMessageDialog(null,  f.toString() );
             }
         }
     }
@@ -125,10 +128,10 @@ public class Main extends JFrame {
                     currentLine=reader.nextLine().replaceAll("\\t","");
                     index++;
 
-                    if(currentLine.equals("") && reader.hasNextLine()){
+                    if(currentLine.isEmpty() && reader.hasNextLine()){
                         currentLine=reader.nextLine().replaceAll("\\t","");
                         index++;
-                        while (currentLine.equals("") && reader.hasNextLine()){
+                        while (currentLine.isEmpty() && reader.hasNextLine()){
                             currentLine=reader.nextLine().replaceAll("\\t","");
                             index++;
 
@@ -156,7 +159,7 @@ public class Main extends JFrame {
                                     chapterName = currentLine;
                                 }else {
                                     index++;
-                                    if(reader.nextLine().replaceAll("\\t","").equals("") && currentLine.split(" ").length<=5){
+                                    if(reader.nextLine().replaceAll("\\t", "").isEmpty() && currentLine.split(" ").length<=5){
                                         if (firstChapter) {
                                             chapters.put(0, "Start of the Book");
                                             chapterStart.put(0, 2);
@@ -196,10 +199,11 @@ public class Main extends JFrame {
                     textArea.append(entry.getKey()+": "+entry.getValue()+"\n");
                 }
 
+                textArea.setCaretPosition(0);
                 reader.close();
 
             } catch (FileNotFoundException f) {
-                f.printStackTrace();
+                JOptionPane.showMessageDialog(null,  f.toString() );
             }
         }else textArea.setText("No text file opened!");
 
@@ -210,9 +214,9 @@ public class Main extends JFrame {
         if(read!=null) {
             try {
                 int chapter = Integer.parseInt(JOptionPane.showInputDialog("Write the number of the chapter you want to read!"));
-                textArea.setText("\n");
                 Scanner reader = new Scanner(read);
                 if(chapters.containsKey(chapter)){
+                    textArea.setText("\n");
                     chapterNumber=chapter;
                     getToChapter(reader,chapterStart.get(chapter));
 
@@ -240,12 +244,14 @@ public class Main extends JFrame {
                         }
                     }
 
+                    textArea.setCaretPosition(0);
                     reader.close();
-                }else JOptionPane.showMessageDialog(this,"This chapter does not exist");
+                }else JOptionPane.showMessageDialog(null,"This chapter does not exist");
 
 
             }catch (NumberFormatException | FileNotFoundException | NullPointerException n){
-                n.printStackTrace();
+                JOptionPane.showMessageDialog(null,  n.toString() );
+
             }
 
         }else textArea.setText("No text file opened!");
@@ -326,10 +332,12 @@ public class Main extends JFrame {
                                 textArea.append(next + "\n");
                             }
                         }
+
+                        textArea.setCaretPosition(0);
                         reader.close();
 
                     } catch (FileNotFoundException | NullPointerException n) {
-                        n.printStackTrace();
+                        JOptionPane.showMessageDialog(null,  n.toString() );
                     }
 
             }
@@ -342,7 +350,8 @@ public class Main extends JFrame {
 
         lineWidth=Integer.parseInt(JOptionPane.showInputDialog("Write the maximum amount of words(width) in a line!"));
 
-        if(read!=null) {
+
+        if(read!=null && lineWidth>0) {
             try {
                 textArea.setText("\n");
                 Scanner reader = new Scanner(read);
@@ -373,6 +382,7 @@ public class Main extends JFrame {
                         }
                     }
 
+                    textArea.setCaretPosition(0);
                     reader.close();
                 }else if(chapterNumber==99018){
                     textArea.setText("\n");
@@ -384,13 +394,15 @@ public class Main extends JFrame {
                             textArea.append(next + "\n");
                         }
                     }
+
+                    textArea.setCaretPosition(0);
                     reader.close();
 
                 }
 
 
             }catch (NumberFormatException | FileNotFoundException | NullPointerException n){
-                n.printStackTrace();
+                JOptionPane.showMessageDialog(null,  n.toString() );
             }
         }
 

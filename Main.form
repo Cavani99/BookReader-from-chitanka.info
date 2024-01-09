@@ -138,7 +138,7 @@
               <component id="43ad4" class="javax.swing.JMenuItem" binding="LineWidthItem">
                 <constraints/>
                 <properties>
-                  <text value="&amp;Change Line Width"/>
+                  <text value="Change &amp;Line Width"/>
                 </properties>
               </component>
             </children>
