@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-
-
 public class Main extends JFrame {
 
     private JPanel Panel;
@@ -40,10 +38,10 @@ public class Main extends JFrame {
         setSize(500,500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+
         chooseBookButton.addActionListener(this::chooseBook);
         loadChaptersButton.addActionListener(this::LoadChapters);
         pickChapterButton.addActionListener(this::pickChapterAction);
-
 
         BackgroundColorItem.addActionListener(this::setBackgroundColor);
         TextColorItem.addActionListener(this::setTextColor);
@@ -348,10 +346,13 @@ public class Main extends JFrame {
 
     public void changeLineWidth(ActionEvent e){
 
+        int prevWidth=lineWidth;
         lineWidth=Integer.parseInt(JOptionPane.showInputDialog("Write the maximum amount of words(width) in a line!"));
 
+        if(lineWidth<=0)
+            lineWidth=prevWidth;
 
-        if(read!=null && lineWidth>0) {
+        if(read!=null) {
             try {
                 textArea.setText("\n");
                 Scanner reader = new Scanner(read);
