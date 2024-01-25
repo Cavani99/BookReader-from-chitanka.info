@@ -67,6 +67,7 @@ public class Main extends JFrame {
             File selectedFile = fileChooser.getSelectedFile();
 
             try{
+                File prevFile = read;
                 read=new File(selectedFile.toURI());
                 Scanner Reader=new Scanner(selectedFile);
 
@@ -79,7 +80,7 @@ public class Main extends JFrame {
                     if (!authorOrName){
                         if(value.trim().isEmpty()){
                             textArea.setText("Not a text file from chitanka.info");
-                            read=null;
+                            read=prevFile;
                             break;
                         }else{
                             textArea.append("Author:"+value);
@@ -88,14 +89,16 @@ public class Main extends JFrame {
                     }else{
                         if(value.trim().isEmpty()){
                             textArea.setText("Not a text file from chitanka.info");
-                            read=null;
+                            read=prevFile;
                         }else {
                             textArea.append("\nBook Name:" + value);
+                            setTitle(value);
                         }
                         break;
                     }
                 }
 
+                Reader.close();
             }catch (FileNotFoundException f){
                 JOptionPane.showMessageDialog(null,  f.toString() );
             }
