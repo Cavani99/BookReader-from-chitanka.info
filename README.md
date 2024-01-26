@@ -1,5 +1,25 @@
 # BookReader-from-chitanka.info
-A Graphical program that reads a text file from chitanka.info,splits it into chapters and allows you to pick a chapter to read.
+
+A Graphical program that reads a text file from <a href="https://chitanka.info/" target="_blank" >chitanka.info</a> ,splits it into chapters and allows you to pick a chapter to read.
+
+---
+
+# Installation steps/How to run:
+
+* Install a newer version of Java, so it can run the program.Here is a link,if needed: <a href="https://www.oracle.com/java/technologies/downloads/" target="_blank" >https://www.oracle.com/java/technologies/downloads/</a>
+* Create a <a href="https://chitanka.info/" target="_blank" >chitanka.info</a> profile ,if you dont have any. Here is a quick register <a href="https://chitanka.info/register" target="_blank" >link</a>. The site is in Bulgarian thought, just to inform you.
+* Download the book you want in **txt.zip** format.Like the button pointed to in the image below: 
+
+![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/72fed7b0-b6f6-4398-ab63-89ae09c8bfd7)
+
+* Unzip the txt file wherever you want, from the zip that you have downloaded!
+* Download the <a href="https://github.com/Cavani99/BookReader-from-chitanka.info/tree/main/out/artifacts/BookReader_from_chitanka_info_jar" target="_blank" >jar</a> file somewhere in your computer.
+* Run the jar file using your installed Java and you should be ready to go. When you have to choose a book,pick the text file that you have just unzipped. Enjoy the simple app ,which I really like ,because of my love to the books 💝📚
+
+**If you have some problems with the app, you can write to me at my email: kristiian.donchev@abv.bg**
+
+--- 
+# Program short explanation
 
 ## Choose Book operation
 
