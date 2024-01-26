@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BookReader-from-chitanka.info:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BookReader_from_chitanka_info_jar</output-path>
+    <root id="archive" name="BookReader-from-chitanka.info.jar">
+      <element id="module-output" name="BookReader-from-chitanka.info" />
+    </root>
+  </artifact>
+</component>
