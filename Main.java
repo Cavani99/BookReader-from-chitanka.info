@@ -2,8 +2,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Main extends JFrame {
@@ -31,6 +32,7 @@ public class Main extends JFrame {
     private LinkedHashMap<Integer,Integer>chapterStart;
     private int lineWidth=30;
     private int chapterNumber;
+    private Charset charset= StandardCharsets.UTF_8;
 
     Main(){
         setContentPane(Panel);
@@ -69,14 +71,16 @@ public class Main extends JFrame {
             try{
                 File prevFile = read;
                 read=new File(selectedFile.toURI());
-                Scanner Reader=new Scanner(selectedFile);
+
+                InputStream in =  new FileInputStream(read);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in,charset));
 
                 textArea.setText("FILE LOADED!!!\n");
                 //to determine if we get the author or book name!
                 boolean authorOrName=false;
                 String value;
-                while (Reader.hasNextLine()){
-                    value=Reader.nextLine().replaceAll("\\t","");
+                while ( (value = reader.readLine()) !=null){
+                    value=value.replaceAll("\\t","");
                     if (!authorOrName){
                         if(value.trim().isEmpty()){
                             textArea.setText("Not a text file from chitanka.info");
@@ -98,9 +102,11 @@ public class Main extends JFrame {
                     }
                 }
 
-                Reader.close();
+                reader.close();
             }catch (FileNotFoundException f){
                 JOptionPane.showMessageDialog(null,  f.toString() );
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,  ex.toString() );
             }
         }
     }
@@ -110,7 +116,8 @@ public class Main extends JFrame {
 
         if(read!=null) {
             try {
-                Scanner reader = new Scanner(read);
+                InputStream in =  new FileInputStream(read);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in,charset));
 
                 String chapterName="";
                 String currentLine;
@@ -121,19 +128,19 @@ public class Main extends JFrame {
                 chapters=new LinkedHashMap<>();
                 chapterStart=new LinkedHashMap<>();
                 for (int i = 0; i < 2; i++) {
-                    reader.nextLine();
-                    reader.nextLine();
+                    reader.readLine();
+                    reader.readLine();
                 }
-                while (reader.hasNextLine()){
+                while ((currentLine = reader.readLine() )!= null){
                     boolean EvenAmountOfEmptySpaces=false;
-                    currentLine=reader.nextLine().replaceAll("\\t","");
+                    currentLine=currentLine.replaceAll("\\t","");
                     index++;
 
-                    if(currentLine.isEmpty() && reader.hasNextLine()){
-                        currentLine=reader.nextLine().replaceAll("\\t","");
+                    if(currentLine.isEmpty() && (currentLine = reader.readLine() )!= null){
+                        currentLine=currentLine.replaceAll("\\t","");
                         index++;
-                        while (currentLine.isEmpty() && reader.hasNextLine()){
-                            currentLine=reader.nextLine().replaceAll("\\t","");
+                        while (currentLine.isEmpty() && (currentLine = reader.readLine() )!= null){
+                            currentLine=currentLine.replaceAll("\\t","");
                             index++;
 
                             EvenAmountOfEmptySpaces= !EvenAmountOfEmptySpaces;
@@ -160,7 +167,7 @@ public class Main extends JFrame {
                                     chapterName = currentLine;
                                 }else {
                                     index++;
-                                    if(reader.nextLine().replaceAll("\\t", "").isEmpty() && currentLine.split(" ").length<=5){
+                                    if(reader.readLine().replaceAll("\\t", "").isEmpty() && currentLine.split(" ").length<=5){
                                         if (firstChapter) {
                                             chapters.put(0, "Start of the Book");
                                             chapterStart.put(0, 2);
@@ -205,6 +212,8 @@ public class Main extends JFrame {
 
             } catch (FileNotFoundException f) {
                 JOptionPane.showMessageDialog(null,  f.toString() );
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,  ex.toString() );
             }
         }else textArea.setText("No text file opened!");
 
@@ -215,7 +224,9 @@ public class Main extends JFrame {
         if(read!=null) {
             try {
                 int chapter = Integer.parseInt(JOptionPane.showInputDialog("Write the number of the chapter you want to read!"));
-                Scanner reader = new Scanner(read);
+                InputStream in =  new FileInputStream(read);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in,charset));
+
                 if(chapters.containsKey(chapter)){
                     textArea.setText("\n");
                     chapterNumber=chapter;
@@ -225,8 +236,9 @@ public class Main extends JFrame {
 
                     if(chapterStart.containsKey(chapter+1)){
                         int endIndex=chapterStart.get(chapter+1);
-                        while(reader.hasNextLine() && startIndex!=endIndex){
-                            String next=reader.nextLine().replaceAll("\\t","");
+                        String next;
+                        while((next=reader.readLine() )!=null && startIndex!=endIndex){
+                            next=next.replaceAll("\\t","");
                             if(next.length()>60){
                                 splitLine(next,lineWidth);
                             }else {
@@ -235,8 +247,9 @@ public class Main extends JFrame {
                             startIndex++;
                         }
                     }else{
-                        while(reader.hasNextLine()){
-                            String next=reader.nextLine().replaceAll("\\t","");
+                        String next;
+                        while((next=reader.readLine() )!=null){
+                            next=next.replaceAll("\\t","");
                             if(next.length()>60){
                                 splitLine(next,lineWidth);
                             }else {
@@ -253,16 +266,18 @@ public class Main extends JFrame {
             }catch (NumberFormatException | FileNotFoundException | NullPointerException n){
                 JOptionPane.showMessageDialog(null,  n.toString() );
 
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,  ex.toString() );
             }
 
         }else textArea.setText("No text file opened!");
     }
 
-    public void getToChapter(Scanner reader,int index) {
+    public void getToChapter(BufferedReader reader, int index) throws IOException {
         int currentPos=0;
 
         while (currentPos!=index){
-            reader.nextLine();
+            reader.readLine();
             currentPos++;
         }
 
@@ -324,9 +339,11 @@ public class Main extends JFrame {
                     chapterNumber=99018;
                     try {
                         textArea.setText("\n");
-                        Scanner reader = new Scanner(read);
-                        while (reader.hasNextLine()) {
-                            String next = reader.nextLine().replaceAll("\\t", "");
+                        String next;
+                        InputStream in =  new FileInputStream(read);
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(in,charset));
+                        while ( (next = reader.readLine()) !=null) {
+                            next = next.replaceAll("\\t", "");
                             if (next.length() > 60) {
                                 splitLine(next,lineWidth);
                             } else {
@@ -338,10 +355,12 @@ public class Main extends JFrame {
                         reader.close();
 
                     } catch (FileNotFoundException | NullPointerException n) {
-                        JOptionPane.showMessageDialog(null,  n.toString() );
+                        JOptionPane.showMessageDialog(null,  n.toString());
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null,  ex.toString());
                     }
 
-            }
+                }
 
         }else textArea.setText("No text file opened!");
 
@@ -358,16 +377,19 @@ public class Main extends JFrame {
         if(read!=null) {
             try {
                 textArea.setText("\n");
-                Scanner reader = new Scanner(read);
+
+                InputStream in =  new FileInputStream(read);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in,charset));
                 if(chapters!=null && chapters.containsKey(chapterNumber)){
                     getToChapter(reader,chapterStart.get(chapterNumber));
 
                     int startIndex=chapterStart.get(chapterNumber);
 
                     if(chapterStart.containsKey(chapterNumber+1)){
+                        String next;
                         int endIndex=chapterStart.get(chapterNumber+1);
-                        while(reader.hasNextLine() && startIndex!=endIndex){
-                            String next=reader.nextLine().replaceAll("\\t","");
+                        while((next=reader.readLine()) != null && startIndex!=endIndex){
+                            next=next.replaceAll("\\t","");
                             if(next.length()>60){
                                 splitLine(next,lineWidth);
                             }else {
@@ -376,8 +398,9 @@ public class Main extends JFrame {
                             startIndex++;
                         }
                     }else{
-                        while(reader.hasNextLine()){
-                            String next=reader.nextLine().replaceAll("\\t","");
+                        String next;
+                        while((next=reader.readLine()) != null){
+                            next=next.replaceAll("\\t","");
                             if(next.length()>60){
                                 splitLine(next,lineWidth);
                             }else {
@@ -390,8 +413,9 @@ public class Main extends JFrame {
                     reader.close();
                 }else if(chapterNumber==99018){
                     textArea.setText("\n");
-                    while (reader.hasNextLine()) {
-                        String next = reader.nextLine().replaceAll("\\t", "");
+                    String next;
+                    while ((next=reader.readLine()) != null) {
+                        next = next.replaceAll("\\t", "");
                         if (next.length() > 60) {
                             splitLine(next,lineWidth);
                         } else {
@@ -407,6 +431,8 @@ public class Main extends JFrame {
 
             }catch (NumberFormatException | FileNotFoundException | NullPointerException n){
                 JOptionPane.showMessageDialog(null,  n.toString() );
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,  ex.toString() );
             }
         }
 
