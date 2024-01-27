@@ -27,6 +27,8 @@ public class Main extends JFrame {
     private JMenuItem Exit;
     private JMenuItem ShowFullBook;
     private JMenuItem LineWidthItem;
+    private JButton nextChapterButton;
+    private JButton previousChapterButton;
     private File read;
     private LinkedHashMap<Integer,String> chapters;
     private LinkedHashMap<Integer,Integer>chapterStart;
@@ -37,7 +39,7 @@ public class Main extends JFrame {
     Main(){
         setContentPane(Panel);
         setTitle("BookReader");
-        setSize(500,500);
+        setSize(670,500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
