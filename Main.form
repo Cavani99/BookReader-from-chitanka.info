@@ -172,10 +172,22 @@
                   <text value="&amp;Pick the Chapter"/>
                 </properties>
               </component>
-              <component id="ed648" class="javax.swing.JMenuItem" binding="ShowFullBook">
+              <component id="ed648" class="javax.swing.JMenuItem" binding="GetPreviousChapterItem">
                 <constraints/>
                 <properties>
                   <enabled value="true"/>
+                  <text value="Get &amp;Previous Chapter"/>
+                </properties>
+              </component>
+              <component id="72abd" class="javax.swing.JMenuItem" binding="GetNextChapterItem">
+                <constraints/>
+                <properties>
+                  <text value="Get &amp;Next Chapter"/>
+                </properties>
+              </component>
+              <component id="a972" class="javax.swing.JMenuItem" binding="ShowFullBook">
+                <constraints/>
+                <properties>
                   <text value="&amp;Print the Entire Book"/>
                 </properties>
               </component>
