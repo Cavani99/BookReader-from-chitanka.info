@@ -3,7 +3,20 @@
 A Graphical program that reads a text file from <a href="https://chitanka.info/" target="_blank" >chitanka.info</a> ,splits it into chapters and allows you to pick a chapter to read.
 
 ---
+# Table of Contents
 
+* [Installation steps/How to run](https://github.com/Cavani99/BookReader-from-chitanka.info?tab=readme-ov-file#installation-stepshow-to-run)
+* [Choose Book operation](https://github.com/Cavani99/BookReader-from-chitanka.info?tab=readme-ov-file#choose-book-operation)
+* [Load Chapters operation ](https://github.com/Cavani99/BookReader-from-chitanka.info?tab=readme-ov-file#load-chapters-operation)
+* [Pick Chapter operation](https://github.com/Cavani99/BookReader-from-chitanka.info?tab=readme-ov-file#pick-chapter-operation)
+* [Next Chapter and Previous Chapter buttons](https://github.com/Cavani99/BookReader-from-chitanka.info?tab=readme-ov-file#next-chapter-and-previous-chapter-buttons)
+* [Edit Menu Bar Options](https://github.com/Cavani99/BookReader-from-chitanka.info?tab=readme-ov-file#edit-menu-bar-options)
+    - [New Menu](https://github.com/Cavani99/BookReader-from-chitanka.info?tab=readme-ov-file#new-menu)
+    - [Edit Menu](https://github.com/Cavani99/BookReader-from-chitanka.info?tab=readme-ov-file#edit-menu)
+    - [File Menu](https://github.com/Cavani99/BookReader-from-chitanka.info?tab=readme-ov-file#file-menu)
+    - [Exit Menu](https://github.com/Cavani99/BookReader-from-chitanka.info?tab=readme-ov-file#exit-menu)
+* [Postscript](https://github.com/Cavani99/BookReader-from-chitanka.info?tab=readme-ov-file#psthe-books-are-only-in-bulgarian-because-the-site-is-made-for-bulgarians---p)
+     
 # Installation steps/How to run:
 
 * Install a newer version of Java, so it can run the program.Here is a link,if needed: <a href="https://www.oracle.com/java/technologies/downloads/" target="_blank" >https://www.oracle.com/java/technologies/downloads/</a>
