@@ -21,60 +21,80 @@ A Graphical program that reads a text file from <a href="https://chitanka.info/"
 --- 
 # Program short explanation
 
-## Choose Book operation
+## [Choose Book](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L68) operation
 
 A File Chooser Dialog opens up to choose the file you want to read.You can only open files with .txt extension.
 
 When a correct text file is opened(from chitanka.info ,althought it is possible to recognize other text files as valid also),it prints the 
 author`s name and the name of the book:
 
-![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/9cfe2be5-6574-4270-ad15-c48095bb0c6e)
+![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/5e7cdd28-96c4-4c82-90b2-106f9ac3fde1)
 
 
 
-## Load Chapters
+
+## [Load Chapters](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L124) operation
 
 If a text file is opened you can load the chapters of the book.The chapters are split by comparing the amount of empty lines and the length of the current line of the text file,and also depending of the first letter of the line.The chapter spliting is not perfect thought and will not always split the chapters as desired ,depending on the book.After a chapter is recognized it`s name and start position in the text is saved in a LinkedHashMap,and after the whole text file is read ,the contents of the LinkedHashMap are printed.
 
 
 Chapters for Crime and Punishment:
 
-![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/aee8deba-0622-4fa2-bb83-9b0c26c71fee)
+![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/55be3841-b2a2-42a6-a790-8f83fa02003a)
 
 
 
-## Pick Chapter
 
-You can pick a chapter to read using an InputDialog.You need to write the number of the chapter ,depending of the position in the LinkedHashMap.
-I also use the splitLine method to shorten the length of the line,for better readability.
+
+## [Pick Chapter](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L232) operation 
+
+You can pick a chapter to read using an InputDialog.You need to write the number of the chapter ,depending of the position in the LinkedHashMap.I use the [getChapter](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L424) method to see if this chapter exists in the LinkedHashMap ,and when it does, we print its information.
+I also use the [splitLine](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L269) method to shorten the length of the line,for better readability.
 
 Part from Chapter II:
 
-![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/04cbe420-a3c2-44fc-9216-aa701495afd7)
+![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/30dfa640-86a8-4a2b-8b1b-c9eda96dd120)
+
+## [Next Chapter](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L241) and [Previous Chapter](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L250) buttons
+
+Simply used to get the Next or the Previous Chapter ,compared to the current chapter loaded for reading.This is what we get,if we try to get the previous chapter of the first one: 
+
+![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/9695aed1-0646-4c9d-b1db-9e4f4e3e0509)
+
+
 
 
 ## Edit Menu Bar Options
 
-The actions to pick a book,load chapters and read a chapter are also made available at the Menu Bar.
+### New Menu
 
-You have the option to change the color of the background and the color of the text!This is made using the JColorChooser Dialog.
+Currently it contains only the option to open a new book.It uses the same operation as the "Choose Book" button.
+
+### Edit Menu
+
+You have the option to change the color of the [background](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L293) and the color of the [text](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L300)!This is made using the JColorChooser Dialog.
 
 Background changed to **Yellow** and text to **Red**:
 
-![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/91aa36b3-34f4-4cdb-83a1-123f0670b159)
+![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/56c08ec9-8ca9-4355-a2e3-ed2afc027aaf)
 
 
-You can also change the maximum width of every line(that is the maximum amount of words)for more enjoyable reading experience.
+You can also change the [maximum width](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L352) of every line(that is the maximum amount of words)for more enjoyable reading experience, using the "Change Line Width" Item.
+
 Chapter with line width of **10**:
 
-![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/96b59fd2-b9ae-4c8f-995e-db7576100ed7)
+![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/c0f4d6f3-919a-4826-9009-c4c6ad840f18)
 
-There is also an option to **print the whole book**,if you want to do that.You get a confirmation dialog at first to confirm 
-that you really want to do this(because it can be kinda slow).
+### File Menu
 
-![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/7154b4e1-3774-4ecf-b501-1354fea8bfa0)
+You get the options to Load the Chapters,Pick the Chapter and get the Previous or Next Chapter(the same operations from the buttons) in this menu aswell.
+There is also an option to **[print the whole book](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L316)**,if you want to do that.You get a confirmation dialog at first to confirm that you really want to do this(because it can be kinda slow).
 
-There is finally a JMenuItem for exiting the program,which also comes with confirm dialog:
+![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/2a297cff-f21d-44f6-b83e-48f9dd3af68c)
+
+### Exit Menu 
+
+Used to [exit](https://github.com/Cavani99/BookReader-from-chitanka.info/blob/main/Main.java#L307) the program.It comes with a confirm dialog:
 
 ![image](https://github.com/Cavani99/BookReader-from-chitanka.info/assets/75423586/e1c58ce9-0b72-45e5-8580-710e244ddf88)
 
