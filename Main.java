@@ -32,16 +32,16 @@ public class Main extends JFrame {
     private JMenuItem GetNextChapterItem;
     private JMenuItem GetPreviousChapterItem;
     private File read;
-    private LinkedHashMap<Integer,String> chapters;
-    private LinkedHashMap<Integer,Integer>chapterStart;
-    private int lineWidth=30;
+    private LinkedHashMap<Integer, String> chapters;
+    private LinkedHashMap<Integer, Integer> chapterStart;
+    private int lineWidth = 30;
     private int chapterNumber;
-    private Charset charset= StandardCharsets.UTF_8;
+    private Charset charset = StandardCharsets.UTF_8;
 
-    Main(){
+    Main() {
         setContentPane(Panel);
         setTitle("BookReader");
-        setSize(670,500);
+        setSize(670, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
@@ -66,45 +66,45 @@ public class Main extends JFrame {
     }
 
     public void chooseBook(ActionEvent e) {
-        chapterNumber= -100;
-        JFileChooser fileChooser=new JFileChooser();
+        chapterNumber = -100;
+        JFileChooser fileChooser = new JFileChooser();
 
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         fileChooser.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter filter=new FileNameExtensionFilter("Text File(.txt)","txt");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text File(.txt)", "txt");
         fileChooser.addChoosableFileFilter(filter);
         int selection = fileChooser.showOpenDialog(getParent());
 
         if (selection == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
 
-            try{
+            try {
                 File prevFile = read;
-                read=new File(selectedFile.toURI());
+                read = new File(selectedFile.toURI());
 
-                InputStream in =  new FileInputStream(read);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in,charset));
+                InputStream in = new FileInputStream(read);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in, charset));
 
                 textArea.setText("FILE LOADED!!!\n");
                 //to determine if we get the author or book name!
-                boolean authorOrName=false;
+                boolean authorOrName = false;
                 String value;
-                while ( (value = reader.readLine()) !=null){
-                    value=value.replaceAll("\\t","");
-                    if (!authorOrName){
-                        if(value.trim().isEmpty()){
+                while ((value = reader.readLine()) != null) {
+                    value = value.replaceAll("\\t", "");
+                    if (!authorOrName) {
+                        if (value.trim().isEmpty()) {
                             textArea.setText("Not a text file from chitanka.info");
-                            read=prevFile;
+                            read = prevFile;
                             break;
-                        }else{
-                            textArea.append("Author:"+value);
-                            authorOrName=true;
+                        } else {
+                            textArea.append("Author:" + value);
+                            authorOrName = true;
                         }
-                    }else{
-                        if(value.trim().isEmpty()){
+                    } else {
+                        if (value.trim().isEmpty()) {
                             textArea.setText("Not a text file from chitanka.info");
-                            read=prevFile;
-                        }else {
+                            read = prevFile;
+                        } else {
                             textArea.append("\nBook Name:" + value);
                             setTitle(value);
                         }
@@ -113,10 +113,10 @@ public class Main extends JFrame {
                 }
 
                 reader.close();
-            }catch (FileNotFoundException f){
-                JOptionPane.showMessageDialog(null,  f.toString() );
+            } catch (FileNotFoundException f) {
+                JOptionPane.showMessageDialog(null, f.toString());
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null,  ex.toString() );
+                JOptionPane.showMessageDialog(null, ex.toString());
             }
         }
     }
@@ -124,44 +124,44 @@ public class Main extends JFrame {
     public void LoadChapters(ActionEvent e) {
 
 
-        if(read!=null) {
+        if (read != null) {
             try {
-                InputStream in =  new FileInputStream(read);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in,charset));
+                InputStream in = new FileInputStream(read);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in, charset));
 
-                String chapterName="";
+                String chapterName = "";
                 String currentLine;
-                int chapterStartPage=0;
-                int index=2;
-                int numberOfChapter=1;
-                boolean firstChapter=true;
-                chapters=new LinkedHashMap<>();
-                chapterStart=new LinkedHashMap<>();
+                int chapterStartPage = 0;
+                int index = 2;
+                int numberOfChapter = 1;
+                boolean firstChapter = true;
+                chapters = new LinkedHashMap<>();
+                chapterStart = new LinkedHashMap<>();
                 for (int i = 0; i < 2; i++) {
                     reader.readLine();
                     reader.readLine();
                 }
-                while ((currentLine = reader.readLine() )!= null){
-                    boolean EvenAmountOfEmptySpaces=false;
-                    currentLine=currentLine.replaceAll("\\t","");
+                while ((currentLine = reader.readLine()) != null) {
+                    boolean EvenAmountOfEmptySpaces = false;
+                    currentLine = currentLine.replaceAll("\\t", "");
                     index++;
 
-                    if(currentLine.isEmpty() && (currentLine = reader.readLine() )!= null){
-                        currentLine=currentLine.replaceAll("\\t","");
+                    if (currentLine.isEmpty() && (currentLine = reader.readLine()) != null) {
+                        currentLine = currentLine.replaceAll("\\t", "");
                         index++;
-                        while (currentLine.isEmpty() && (currentLine = reader.readLine() )!= null){
-                            currentLine=currentLine.replaceAll("\\t","");
+                        while (currentLine.isEmpty() && (currentLine = reader.readLine()) != null) {
+                            currentLine = currentLine.replaceAll("\\t", "");
                             index++;
 
-                            EvenAmountOfEmptySpaces= !EvenAmountOfEmptySpaces;
+                            EvenAmountOfEmptySpaces = !EvenAmountOfEmptySpaces;
                         }
 
                         //empty spaces are even amount
-                        if(EvenAmountOfEmptySpaces && chapterStartPage!=0){
-                            if(index-chapterStartPage>=20 && Character.isUpperCase(chapterName.charAt(0))
+                        if (EvenAmountOfEmptySpaces && chapterStartPage != 0) {
+                            if (index - chapterStartPage >= 20 && Character.isUpperCase(chapterName.charAt(0))
                                     && Character.isUpperCase(currentLine.charAt(0)) || Character.isDigit(currentLine.charAt(0))) {
 
-                                if(currentLine.length()<=23) {
+                                if (currentLine.length() <= 23) {
 
                                     if (firstChapter) {
                                         chapters.put(0, "Start of the Book");
@@ -175,9 +175,9 @@ public class Main extends JFrame {
 
                                     chapterStartPage = index;
                                     chapterName = currentLine;
-                                }else {
+                                } else {
                                     index++;
-                                    if(reader.readLine().replaceAll("\\t", "").isEmpty() && currentLine.split(" ").length<=5){
+                                    if (reader.readLine().replaceAll("\\t", "").isEmpty() && currentLine.split(" ").length <= 5) {
                                         if (firstChapter) {
                                             chapters.put(0, "Start of the Book");
                                             chapterStart.put(0, 2);
@@ -192,11 +192,11 @@ public class Main extends JFrame {
                                     }
                                 }
                             }
-                        }else if(EvenAmountOfEmptySpaces && (Character.isUpperCase(currentLine.charAt(0)) || Character.isDigit(currentLine.charAt(0)))&& currentLine.length()<=23){
+                        } else if (EvenAmountOfEmptySpaces && (Character.isUpperCase(currentLine.charAt(0)) || Character.isDigit(currentLine.charAt(0))) && currentLine.length() <= 23) {
 
                             chapterStartPage = index;
                             chapterName = currentLine;
-                        }else if(!EvenAmountOfEmptySpaces && currentLine.length()<=5 && Character.isDigit(currentLine.charAt(0))){
+                        } else if (!EvenAmountOfEmptySpaces && currentLine.length() <= 5 && Character.isDigit(currentLine.charAt(0))) {
                             chapters.put(numberOfChapter, chapterName);
                             chapterStart.put(numberOfChapter, chapterStartPage);
                             numberOfChapter++;
@@ -213,19 +213,19 @@ public class Main extends JFrame {
 
 
                 textArea.setText("");
-                for (Map.Entry<Integer,String>entry:chapters.entrySet()) {
-                    textArea.append(entry.getKey()+": "+entry.getValue()+"\n");
+                for (Map.Entry<Integer, String> entry : chapters.entrySet()) {
+                    textArea.append(entry.getKey() + ": " + entry.getValue() + "\n");
                 }
 
                 textArea.setCaretPosition(0);
                 reader.close();
 
             } catch (FileNotFoundException f) {
-                JOptionPane.showMessageDialog(null,  f.toString() );
+                JOptionPane.showMessageDialog(null, f.toString());
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null,  ex.toString() );
+                JOptionPane.showMessageDialog(null, ex.toString());
             }
-        }else textArea.setText("No text file opened!");
+        } else textArea.setText("No text file opened!");
 
     }
 
@@ -233,174 +233,174 @@ public class Main extends JFrame {
         try {
             chapterNumber = Integer.parseInt(JOptionPane.showInputDialog("Write the number of the chapter you want to read!"));
             getChapter(chapterNumber);
-        }catch (NumberFormatException n){
+        } catch (NumberFormatException n) {
 
         }
     }
 
-    public void getNextChapter(ActionEvent e){
-        chapterNumber=chapterNumber+1;
+    public void getNextChapter(ActionEvent e) {
+        chapterNumber = chapterNumber + 1;
 
         getChapter(chapterNumber);
 
-        if(chapters!=null && !chapters.containsKey(chapterNumber))
-            chapterNumber=chapterNumber-1;
+        if (chapters != null && !chapters.containsKey(chapterNumber))
+            chapterNumber = chapterNumber - 1;
     }
 
-    public void getPreviousChapter(ActionEvent e){
-        chapterNumber=chapterNumber-1;
+    public void getPreviousChapter(ActionEvent e) {
+        chapterNumber = chapterNumber - 1;
 
         getChapter(chapterNumber);
 
-        if(chapters!=null && !chapters.containsKey(chapterNumber))
-            chapterNumber=chapterNumber+1;
+        if (chapters != null && !chapters.containsKey(chapterNumber))
+            chapterNumber = chapterNumber + 1;
     }
 
     public void getToChapter(BufferedReader reader, int index) throws IOException {
-        int currentPos=0;
+        int currentPos = 0;
 
-        while (currentPos!=index){
+        while (currentPos != index) {
             reader.readLine();
             currentPos++;
         }
 
     }
 
-    public void splitLine(String text,int lineWidth){
-        String [] wordsArray=text.split(" ");
-        int curr=0;
-        int total=0;
-        while(true){
-            total+=lineWidth;
+    public void splitLine(String text, int lineWidth) {
+        String[] wordsArray = text.split(" ");
+        int curr = 0;
+        int total = 0;
+        while (true) {
+            total += lineWidth;
 
-            if(total>=wordsArray.length){
+            if (total >= wordsArray.length) {
                 for (int i = curr; i < wordsArray.length; i++) {
-                    textArea.append(wordsArray[i]+" ");
+                    textArea.append(wordsArray[i] + " ");
                 }
                 textArea.append("\n");
                 break;
-            }else{
+            } else {
                 for (int i = curr; i < total; i++) {
-                    textArea.append(wordsArray[i]+" ");
+                    textArea.append(wordsArray[i] + " ");
                 }
                 textArea.append("\n");
             }
 
-            curr+=lineWidth;
+            curr += lineWidth;
         }
     }
 
     public void setBackgroundColor(ActionEvent e) {
 
-        Color color=JColorChooser.showDialog(null, "Choose a color",textArea.getBackground());
-        textArea.setBackground(Objects.requireNonNullElseGet(color, () -> new Color(5,13,12)));
+        Color color = JColorChooser.showDialog(null, "Choose a color", textArea.getBackground());
+        textArea.setBackground(Objects.requireNonNullElseGet(color, () -> new Color(5, 13, 12)));
 
     }
 
     public void setTextColor(ActionEvent e) {
 
-        Color color=JColorChooser.showDialog(null, "Choose a color",textArea.getForeground());
-        textArea.setForeground(Objects.requireNonNullElseGet(color, () -> new Color(235,235,235)));
+        Color color = JColorChooser.showDialog(null, "Choose a color", textArea.getForeground());
+        textArea.setForeground(Objects.requireNonNullElseGet(color, () -> new Color(235, 235, 235)));
 
     }
 
     public void exitProgram(ActionEvent e) {
 
-    int confirm = JOptionPane.showConfirmDialog(null, "Exit?");
+        int confirm = JOptionPane.showConfirmDialog(null, "Exit?");
 
-    if(confirm==0)
-       System.exit(0);
+        if (confirm == 0)
+            System.exit(0);
 
     }
 
     public void printFullBook(ActionEvent e) {
 
-        if(read!=null) {
+        if (read != null) {
             int confirm = JOptionPane.showConfirmDialog(null, "Do you really want to do this? It will be SLOW!");
 
-                if (confirm == 0){
-                    chapterNumber=99018;
-                    try {
-                        textArea.setText("\n");
-                        String next;
-                        InputStream in =  new FileInputStream(read);
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(in,charset));
-                        while ( (next = reader.readLine()) !=null) {
-                            next = next.replaceAll("\\t", "");
-                            if (next.length() > 60) {
-                                splitLine(next,lineWidth);
-                            } else {
-                                textArea.append(next + "\n");
-                            }
+            if (confirm == 0) {
+                chapterNumber = 99018;
+                try {
+                    textArea.setText("\n");
+                    String next;
+                    InputStream in = new FileInputStream(read);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in, charset));
+                    while ((next = reader.readLine()) != null) {
+                        next = next.replaceAll("\\t", "");
+                        if (next.length() > 60) {
+                            splitLine(next, lineWidth);
+                        } else {
+                            textArea.append(next + "\n");
                         }
-
-                        textArea.setCaretPosition(0);
-                        reader.close();
-
-                    } catch (FileNotFoundException | NullPointerException n) {
-                        JOptionPane.showMessageDialog(null,  n.toString());
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(null,  ex.toString());
                     }
 
+                    textArea.setCaretPosition(0);
+                    reader.close();
+
+                } catch (FileNotFoundException | NullPointerException n) {
+                    JOptionPane.showMessageDialog(null, n.toString());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, ex.toString());
                 }
 
-        }else textArea.setText("No text file opened!");
+            }
+
+        } else textArea.setText("No text file opened!");
 
     }
 
-    public void changeLineWidth(ActionEvent e){
+    public void changeLineWidth(ActionEvent e) {
 
-        int prevWidth=lineWidth;
-        lineWidth=Integer.parseInt(JOptionPane.showInputDialog("Write the maximum amount of words(width) in a line!"));
+        int prevWidth = lineWidth;
+        lineWidth = Integer.parseInt(JOptionPane.showInputDialog("Write the maximum amount of words(width) in a line!"));
 
-        if(lineWidth<=0)
-            lineWidth=prevWidth;
+        if (lineWidth <= 0)
+            lineWidth = prevWidth;
 
-        if(read!=null) {
+        if (read != null) {
             try {
                 textArea.setText("\n");
 
-                InputStream in =  new FileInputStream(read);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in,charset));
-                if(chapters!=null && chapters.containsKey(chapterNumber)){
-                    getToChapter(reader,chapterStart.get(chapterNumber));
+                InputStream in = new FileInputStream(read);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in, charset));
+                if (chapters != null && chapters.containsKey(chapterNumber)) {
+                    getToChapter(reader, chapterStart.get(chapterNumber));
 
-                    int startIndex=chapterStart.get(chapterNumber);
+                    int startIndex = chapterStart.get(chapterNumber);
 
-                    if(chapterStart.containsKey(chapterNumber+1)){
+                    if (chapterStart.containsKey(chapterNumber + 1)) {
                         String next;
-                        int endIndex=chapterStart.get(chapterNumber+1);
-                        while((next=reader.readLine()) != null && startIndex!=endIndex){
-                            next=next.replaceAll("\\t","");
-                            if(next.length()>60){
-                                splitLine(next,lineWidth);
-                            }else {
+                        int endIndex = chapterStart.get(chapterNumber + 1);
+                        while ((next = reader.readLine()) != null && startIndex != endIndex) {
+                            next = next.replaceAll("\\t", "");
+                            if (next.length() > 60) {
+                                splitLine(next, lineWidth);
+                            } else {
                                 textArea.append(next + "\n");
                             }
                             startIndex++;
                         }
-                    }else{
+                    } else {
                         String next;
-                        while((next=reader.readLine()) != null){
-                            next=next.replaceAll("\\t","");
-                            if(next.length()>60){
-                                splitLine(next,lineWidth);
-                            }else {
-                                textArea.append(next+"\n");
+                        while ((next = reader.readLine()) != null) {
+                            next = next.replaceAll("\\t", "");
+                            if (next.length() > 60) {
+                                splitLine(next, lineWidth);
+                            } else {
+                                textArea.append(next + "\n");
                             }
                         }
                     }
 
                     textArea.setCaretPosition(0);
 
-                }else if(chapterNumber==99018){
+                } else if (chapterNumber == 99018) {
                     textArea.setText("\n");
                     String next;
-                    while ((next=reader.readLine()) != null) {
+                    while ((next = reader.readLine()) != null) {
                         next = next.replaceAll("\\t", "");
                         if (next.length() > 60) {
-                            splitLine(next,lineWidth);
+                            splitLine(next, lineWidth);
                         } else {
                             textArea.append(next + "\n");
                         }
@@ -412,65 +412,65 @@ public class Main extends JFrame {
 
                 reader.close();
 
-            }catch (NumberFormatException | FileNotFoundException | NullPointerException n){
-                JOptionPane.showMessageDialog(null,  n.toString() );
+            } catch (NumberFormatException | FileNotFoundException | NullPointerException n) {
+                JOptionPane.showMessageDialog(null, n.toString());
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null,  ex.toString() );
+                JOptionPane.showMessageDialog(null, ex.toString());
             }
         }
 
     }
 
-    public void getChapter(int chapter){
+    public void getChapter(int chapter) {
 
-        if(read!=null) {
+        if (read != null) {
             try {
-                InputStream in =  new FileInputStream(read);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in,charset));
+                InputStream in = new FileInputStream(read);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in, charset));
 
-                if(chapters.containsKey(chapter)){
+                if (chapters.containsKey(chapter)) {
                     textArea.setText("\n");
-                    getToChapter(reader,chapterStart.get(chapter));
+                    getToChapter(reader, chapterStart.get(chapter));
 
-                    int startIndex=chapterStart.get(chapter);
+                    int startIndex = chapterStart.get(chapter);
 
-                    if(chapterStart.containsKey(chapter+1)){
-                        int endIndex=chapterStart.get(chapter+1);
+                    if (chapterStart.containsKey(chapter + 1)) {
+                        int endIndex = chapterStart.get(chapter + 1);
                         String next;
-                        while((next=reader.readLine() )!=null && startIndex!=endIndex){
-                            next=next.replaceAll("\\t","");
-                            if(next.length()>60){
-                                splitLine(next,lineWidth);
-                            }else {
+                        while ((next = reader.readLine()) != null && startIndex != endIndex) {
+                            next = next.replaceAll("\\t", "");
+                            if (next.length() > 60) {
+                                splitLine(next, lineWidth);
+                            } else {
                                 textArea.append(next + "\n");
                             }
                             startIndex++;
                         }
-                    }else{
+                    } else {
                         String next;
-                        while((next=reader.readLine() )!=null){
-                            next=next.replaceAll("\\t","");
-                            if(next.length()>60){
-                                splitLine(next,lineWidth);
-                            }else {
-                                textArea.append(next+"\n");
+                        while ((next = reader.readLine()) != null) {
+                            next = next.replaceAll("\\t", "");
+                            if (next.length() > 60) {
+                                splitLine(next, lineWidth);
+                            } else {
+                                textArea.append(next + "\n");
                             }
                         }
                     }
 
                     textArea.setCaretPosition(0);
                     reader.close();
-                }else JOptionPane.showMessageDialog(null,"This chapter does not exist");
+                } else JOptionPane.showMessageDialog(null, "This chapter does not exist");
 
 
-            }catch (FileNotFoundException | NullPointerException n){
-                JOptionPane.showMessageDialog(null,  n.toString() );
+            } catch (FileNotFoundException | NullPointerException n) {
+                JOptionPane.showMessageDialog(null, n.toString());
 
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null,  ex.toString() );
+                JOptionPane.showMessageDialog(null, ex.toString());
             }
 
-        }else textArea.setText("No text file opened!");
+        } else textArea.setText("No text file opened!");
     }
 
 
